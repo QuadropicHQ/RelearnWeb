@@ -1,3 +1,10 @@
+"""
+Quadropic OSS
+https://oss.quadropic.com
+Author: [Mohamed Kamran , ]
+Date: Feb 21st 2025
+This file contains the implementation of the Firecrawl search functionality.
+"""
 import streamlit as st
 import time
 import os
@@ -74,13 +81,7 @@ def collect_feedback():
         st.session_state.state.feedbacks.append(feedback)
         st.sidebar.success("Thank you for your feedback!")
 
-def export_research():
-    """Export research data as JSON"""
-    research_data = {
-        "saved_queries": st.session_state.state.saved_queries,
-        "feedbacks": st.session_state.state.feedbacks
-    }
-    st.download_button("📥 Export Research", json.dumps(research_data, indent=4), "research_data.json", "application/json")
+
 
 def run_research(params: Dict[str, Any]):
     """Execute research pipeline"""
@@ -121,7 +122,7 @@ def main():
     st.markdown("[Learn more about Quadropic](https://quadropic.com)")
     params = render_sidebar()
     collect_feedback()
-    export_research()
+    
     
     if st.button("🚀 Start Research"):
         st.session_state.state.research_in_progress = True
