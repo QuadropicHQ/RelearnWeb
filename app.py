@@ -15,6 +15,10 @@ from typing import Dict, Any
 from dotenv import load_dotenv, set_key
 from dataclasses import dataclass
 from relearnweb_backend import graph, ResearchAgentState
+from typing import Dict, Any
+from utils.accessibility import get_voice_input, speak_text
+
+
 
 # Constants
 ENV_KEYS = {
@@ -103,12 +107,35 @@ def render_header():
 def render_sidebar() -> Dict[str, Any]:
     """Render sidebar and return research parameters"""
     st.sidebar.header("Research Parameters")
+    
+    # --- Accessibility Tools Section ---
+    st.sidebar.subheader("Accessibility Tools")
+    
+    # Voice Search: Capture voice input and store it in session state
+    if st.sidebar.button("🎤 Voice Search"):
+        voice_query = get_voice_input("Please say your research query")
+        st.session_state.voice_query = voice_query
+        st.sidebar.success(f"Voice query recognized: {voice_query}")
+    
+    # Speak Aloud: Read out the recognized voice query (or a default message)
+    if st.sidebar.button("🔊 Speak Aloud"):
+        current_query = st.session_state.get("voice_query", "No voice query recognized yet")
+        speak_text(current_query)
+    
+    # --- Normal Text Input Section ---
+    query = st.sidebar.text_input("Research Query", "Quantum Computing breakthroughs")
+    st.session_state.query = query
+    
+    depth = st.sidebar.number_input("Depth", value=1, min_value=0, max_value=10)
+    breadth = st.sidebar.number_input("Breadth", value=3, min_value=1, max_value=10)
+    
     params = {
-        "query": st.sidebar.text_input("Research Query", "Quantum Computing breakthroughs"),
-        "depth": st.sidebar.number_input("Depth", value=1, min_value=0, max_value=10),
-        "breadth": st.sidebar.number_input("Breadth", value=3, min_value=1, max_value=10)
+        "query": query,
+        "depth": depth,
+        "breadth": breadth
     }
     return params
+
 
 def render_settings():
     """Render settings form"""

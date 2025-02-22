@@ -7,7 +7,7 @@ Date: Feb 18th 2025
 This file contains the implementation of the LLM model using langchain-openai.
 """
 
-from langchain_openai import ChatOpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_core.output_parsers import StrOutputParser
 import os
